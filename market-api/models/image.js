@@ -5,9 +5,12 @@ module.exports = class Image extends Sequelize.Model {
       return super.init(
          {
             img: {
-               type: Sequelize.STRING(100),
+               type: Sequelize.STRING(200),
                allowNull: false,
                unique: true,
+            },
+            isTitle: {
+               type: Sequelize.BOOLEAN,
             },
          },
          {

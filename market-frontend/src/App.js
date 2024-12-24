@@ -6,29 +6,35 @@ import SignupPage from './pages/SignupPage'
 import MyPage from './pages/MyPage'
 import OrderPage from './pages/OrderPage'
 import BoardDetailPage from './pages/BoardDetailPage'
+import BoardCreatePage from './pages/BoardCreatePage'
+import BoardEditPage from './pages/BoardEditPage'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
 
+import { checkAuthStatusThunk } from './features/authSlice'
+
 function App() {
    const dispatch = useDispatch()
 
-   const { isAuthenticated, user } = useSelector((state) => state.auth) // 로그인 상태 가져오기
+   const { isAuthenticated, user } = useSelector((state) => state.auth)
    useEffect(() => {
-      //  dispatch(checkAuthStatusThunk())
+      dispatch(checkAuthStatusThunk())
    }, [dispatch])
 
    return (
       <>
          <Navbar isAuthenticated={isAuthenticated} user={user} />
          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/:search" element={<HomePage />} />
+            <Route path="/" element={<HomePage isAuthenticated={isAuthenticated} user={user} />} />
+            <Route path="/:search" element={<HomePage isAuthenticated={isAuthenticated} user={user} />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />
-            <Route path="/my" element={<MyPage />} />
+            <Route path="/my" element={<MyPage isAuthenticated={isAuthenticated} user={user} />} />
             <Route path="/order" element={<OrderPage />} />
-            <Route path="/boardDetail" element={<BoardDetailPage />} />
+            <Route path="/board/detail/:id" element={<BoardDetailPage isAuthenticated={isAuthenticated} user={user} />} />
+            <Route path="/board/create" element={<BoardCreatePage />} />
+            <Route path="/board/edit/:id" element={<BoardEditPage />} />
          </Routes>
       </>
    )

@@ -10,7 +10,7 @@ module.exports = () => {
             usernameField: 'loginId',
             passwordField: 'password',
          },
-         async (nick, password, done) => {
+         async (loginId, password, done) => {
             try {
                const exUser = await User.findOne({ where: { loginId } })
                if (exUser) {
