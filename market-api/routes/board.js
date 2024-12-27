@@ -222,12 +222,11 @@ router.put(
             return res.status(404).json({ success: false, message: '게시물을 찾을 수 없습니다.' })
          }
          await product.update({
-            id: product.id,
-            title: product.title,
-            content: product.content,
-            subContent: product.content,
-            price: product.price,
-            CategoryId: product.CategoryId,
+            title: req.body.title,
+            content: req.body.content,
+            subContent: req.body.content,
+            price: req.body.price,
+            CategoryId: req.body.categoryId,
          })
          // 이미지
          if (req.files.titleImg) {
@@ -240,10 +239,7 @@ router.put(
          }
          // 서브 이미지
          if (req.files.subImg) {
-            const subImg = await Image.findAll({
-               where: { ProductId: product.id, isTitle: false },
-            })
-            await subImg.destroy()
+            await Image.destroy({ where: { ProductId: product.id, isTitle: false } })
             const imgFiles = req.files.subImg
             const result = imgFiles.map((img) => {
                Image.create({
@@ -264,7 +260,7 @@ router.put(
          })
          res.json({
             success: true,
-            post: updatedPost,
+            post: updatedProduct,
             message: '게시물이 성공적으로 수정되었습니다.',
          })
       } catch (error) {

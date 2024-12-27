@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Pagination, Stack } from '@mui/material'
 import { fetchProductsThunk } from '../../features/boardSlice'
 import { Link, useSearchParams } from 'react-router-dom'
+import { Container, Table } from '../../styles/home'
 
 const BoardListItem = ({ isAuthenticated, user }) => {
    const [query, setQuery] = useSearchParams('')
@@ -22,8 +23,8 @@ const BoardListItem = ({ isAuthenticated, user }) => {
    return (
       <>
          {products && products.length > 0 ? (
-            <>
-               <table>
+            <Container>
+               <Table>
                   <tbody>
                      <tr>
                         <th>이미지</th>
@@ -31,24 +32,30 @@ const BoardListItem = ({ isAuthenticated, user }) => {
                         <th>제목</th>
                         <th>가격</th>
                         <th>판매자</th>
+                        <th>판매상태</th>
                      </tr>
                      {products.map((pr) => {
                         return (
                            <tr key={pr.id}>
                               <td>
-                                 <img src={`${process.env.REACT_APP_API_URL}${pr.Images[0].img}`} height={'100px'} alt="이미지" />
+                                 <Link to={`/board/detail/${pr.id}`}>
+                                    <img src={`${process.env.REACT_APP_API_URL}${pr.Images[0].img}`} height={'100px'} alt="이미지" />
+                                 </Link>
                               </td>
                               <td>{pr.Category.categoryName}</td>
                               <td>
                                  <Link to={`/board/detail/${pr.id}`}>{pr.title}</Link>
                               </td>
-                              <td>{pr.price}</td>
-                              <td>{pr.User.nick}</td>
+                              <td>{pr.price.toLocaleString()}</td>
+                              <td>
+                                 <Link to={`/user/${pr.User.id}`}>{pr.User.nick}</Link>
+                              </td>
+                              <td>{pr.status}</td>
                            </tr>
                         )
                      })}
                   </tbody>
-               </table>
+               </Table>
                <Stack spacing={2} sx={{ mt: 3, alignItems: 'center' }}>
                   <Pagination
                      count={pagination.totalPages} // 총 페이지
@@ -56,7 +63,7 @@ const BoardListItem = ({ isAuthenticated, user }) => {
                      onChange={handlePageChange} // 페이지 변경 함수
                   />
                </Stack>
-            </>
+            </Container>
          ) : (
             !loading && <>게시물이 없습니다.</>
          )}

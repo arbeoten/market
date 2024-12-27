@@ -8,7 +8,7 @@ module.exports = class Order extends Sequelize.Model {
                type: Sequelize.STRING(100),
                allowNull: false,
             },
-            location: {
+            address: {
                type: Sequelize.STRING(500),
                allowNull: false,
             },

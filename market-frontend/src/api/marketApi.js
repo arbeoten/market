@@ -119,3 +119,25 @@ export const updateProduct = async (id, productData) => {
       throw error
    }
 }
+
+// 주문 등록
+export const createOrder = async (orderData) => {
+   try {
+      const response = await marketApi.post('/order', orderData)
+      return response
+   } catch (error) {
+      console.error(`API Request 오류: ${error.message}`)
+      throw error
+   }
+}
+
+// 유저 검색
+export const getUserById = async (id) => {
+   try {
+      const response = await marketApi.get(`/user/${id}`)
+      return response
+   } catch (error) {
+      console.error(`API Request 오류: ${error.message}`)
+      throw error
+   }
+}

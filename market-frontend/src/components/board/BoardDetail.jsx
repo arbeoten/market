@@ -4,9 +4,24 @@ import { deleteProductThunk, fetchProductByIdThunk } from '../../features/boardS
 import { useCallback, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { Pagination, Navigation } from 'swiper/modules'
+import 'swiper/css'
+import 'swiper/css/pagination'
+import 'swiper/css/navigation'
+
 const BoardDetailPage = ({ isAuthenticated, user }) => {
    const { id } = useParams()
    const dispatch = useDispatch()
+
+   const slides = () =>
+      product.Images.map((img) => {
+         return (
+            <SwiperSlide key={img.img}>
+               <img src={process.env.REACT_APP_API_URL + img.img}></img>
+            </SwiperSlide>
+         )
+      })
 
    // 게시물 데이터 불러오기
    useEffect(() => {
@@ -30,6 +45,16 @@ const BoardDetailPage = ({ isAuthenticated, user }) => {
       <>
          {product && (
             <>
+               <Swiper
+                  pagination={{
+                     type: 'fraction',
+                  }}
+                  navigation={true}
+                  modules={[Pagination, Navigation]}
+                  className="mySwiper"
+               >
+                  {slides()}
+               </Swiper>
                <h1>{product.title}</h1>
                <p>{product.User.nick} 님이 판매중입니다</p>
                {isAuthenticated && product.User.id === user.id && (
@@ -38,6 +63,13 @@ const BoardDetailPage = ({ isAuthenticated, user }) => {
                         <button>수정</button>
                      </Link>
                      <button onClick={() => onClickDelete(product.id)}>삭제</button>
+                  </>
+               )}
+               {isAuthenticated && product.User.id !== user.id && (
+                  <>
+                     <Link to={`/order`} state={{ product: product }}>
+                        <button disabled={product.status === '판매중' ? false : true}>주문하기</button>
+                     </Link>
                   </>
                )}
             </>
