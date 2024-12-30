@@ -21,7 +21,7 @@ module.exports = class Order extends Sequelize.Model {
                allowNull: false,
                defaultValue: '결제완료',
                validate: {
-                  isIn: [['결제완료', '상품대기중', '배송중', '배송완료']],
+                  isIn: [['결제완료', '상품준비중', '배송중', '배송완료']],
                },
             },
          },

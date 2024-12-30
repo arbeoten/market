@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { getUserById } from '../api/marketApi'
+import { getUserById, getUserSellCount } from '../api/marketApi'
 
 // 유저 검색 thunk
 export const fetchGetUserByIdThunk = createAsyncThunk('user/fetchGetUserById', async (id, { rejectWithValue }) => {
@@ -15,6 +15,7 @@ const userSlice = createSlice({
    name: 'user',
    initialState: {
       user: null,
+      sellCount: null,
       loading: false,
       error: null,
    },
@@ -29,6 +30,7 @@ const userSlice = createSlice({
          .addCase(fetchGetUserByIdThunk.fulfilled, (state, action) => {
             state.loading = false
             state.user = action.payload.user
+            state.sellCount = action.payload.sellCount
          })
          .addCase(fetchGetUserByIdThunk.rejected, (state, action) => {
             state.loading = false

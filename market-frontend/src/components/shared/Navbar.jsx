@@ -1,5 +1,5 @@
 import { useDispatch } from 'react-redux'
-import { Container, Menu, SearchBox, LoginBt } from '../../styles/navbar'
+import { Container, Wrap, SearchBox, LoginBt } from '../../styles/navbar'
 import { Link, useNavigate } from 'react-router-dom'
 import { useCallback, useState } from 'react'
 import { logoutUserThunk } from '../../features/authSlice'
@@ -23,15 +23,22 @@ const Navbar = ({ isAuthenticated, user }) => {
 
    const handleSearch = useCallback(() => {
       window.location.href = `/?keyword=${keyword}`
-   }, [dispatch, keyword])
+   }, [keyword])
    return (
-      <Container>
-         <Menu>
+      <Wrap>
+         <Container>
             <Link to="/">
                <img src="/images/logo.png" height={'40px'} />
             </Link>
             <SearchBox>
-               <input type="text" value={keyword} onChange={(e) => setKeyword(e.target.value)} />
+               <input
+                  type="text"
+                  value={keyword}
+                  onChange={(e) => setKeyword(e.target.value)}
+                  onKeyUp={(e) => {
+                     if (e.key === 'Enter') handleSearch()
+                  }}
+               />
                <button onClick={handleSearch}>
                   <SearchIcon />
                </button>
@@ -39,10 +46,14 @@ const Navbar = ({ isAuthenticated, user }) => {
             {isAuthenticated ? (
                // 로그인 상태일시
                <>
-                  환영합니다 <Link to={`/user/${user.id}`}>{user?.nick}님</Link>
-                  <button onClick={handleLogout}>로그아웃</button>
+                  <p>
+                     <Link to={`/user/${user.id}`}>{user?.nick}님</Link>
+                  </p>
+                  <LoginBt style={{ width: '60px' }} onClick={handleLogout}>
+                     로그아웃
+                  </LoginBt>
                   <Link to="/board/create">
-                     <button>판매등록</button>
+                     <LoginBt style={{ width: '60px' }}>판매등록</LoginBt>
                   </Link>
                </>
             ) : (
@@ -53,8 +64,8 @@ const Navbar = ({ isAuthenticated, user }) => {
                   </Link>
                </>
             )}
-         </Menu>
-      </Container>
+         </Container>
+      </Wrap>
    )
 }
 

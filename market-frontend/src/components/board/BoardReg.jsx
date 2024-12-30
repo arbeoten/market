@@ -1,7 +1,23 @@
 import { Swiper, SwiperSlide } from 'swiper/react'
 import React, { useState, useCallback, useMemo, useEffect } from 'react'
+import { Wrap, Container } from '../../styles/input'
+import { Select, MenuItem, FormControl, InputLabel, FormHelperText, TextField, Button } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 
 const BoardReg = ({ onSubmit, initialValues = {} }) => {
+   const VisuallyHiddenInput = styled('input')({
+      clip: 'rect(0 0 0 0)',
+      clipPath: 'inset(50%)',
+      height: 1,
+      overflow: 'hidden',
+      position: 'absolute',
+      bottom: 0,
+      left: 0,
+      whiteSpace: 'nowrap',
+      width: 1,
+   })
+
    const [title, setTitle] = useState(initialValues.title || '')
    const [content, setContent] = useState(initialValues.content || '')
    const [subContent, setSubContent] = useState(initialValues.subContent || '')
@@ -90,30 +106,42 @@ const BoardReg = ({ onSubmit, initialValues = {} }) => {
    }
 
    return (
-      <>
-         <form method="post" encType="multipart/form-data" onSubmit={handleSubmit}>
-            <p>판매 게시물 제목</p>
-            <input type="text" name="title" value={title} onChange={(e) => setTitle(e.target.value)} />
-            <p>상품상태</p>
-            <input type="textarea" name="subContent" value={subContent} onChange={(e) => setSubContent(e.target.value)} />
-            <p>상품소개</p>
-            <input type="textarea" name="content" value={content} onChange={(e) => setContent(e.target.value)} />
-            <p>가격</p>
-            <input type="text" name="price" value={price} onChange={(e) => setPrice(e.target.value)} />
-            <p>카테고리</p>
-            <select name="categoryId" onChange={(e) => setCategoryId(e.target.value)} value={categoryId}>
-               <option value="1">가전제품</option>
-               <option value="2">의류</option>
-            </select>
-            <p>대표이미지</p>
-            <input type="file" name="titleImg" onChange={handleTitleImgChange} />
-            {titleImgUrl && <img src={titleImgUrl} alt="업로드 이미지 미리보기" style={{ width: '150px', height: '150px' }} />}
-            <p>추가이미지</p>
-            <input type="file" name="subImg" onChange={handleSubImgChange} multiple />
-            {subImgUrl && subImgPreview()}
-            <button type="submit">등록하기</button>
-         </form>
-      </>
+      <Wrap>
+         <Container>
+            <p>판매글 등록</p>
+            <form method="post" encType="multipart/form-data" onSubmit={handleSubmit}>
+               <TextField label="게시물 제목" variant="outlined" type="text" name="title" value={title} onChange={(e) => setTitle(e.target.value)} sx={{ m: 1 }} />
+               <TextField label="상품상태" variant="outlined" type="textarea" name="subContent" value={subContent} onChange={(e) => setSubContent(e.target.value)} sx={{ m: 1 }} />
+               <TextField label="상품소개" variant="outlined" type="textarea" name="content" value={content} onChange={(e) => setContent(e.target.value)} sx={{ m: 1 }} />
+               <TextField label="가격" variant="outlined" type="text" name="price" value={price} onChange={(e) => setPrice(e.target.value)} sx={{ m: 1 }} />
+               <FormControl fullWidth>
+                  <InputLabel id="category-label" sx={{ m: 1 }}>
+                     카테고리
+                  </InputLabel>
+                  <Select labelId="category-label" name="categoryId" value={categoryId} onChange={(e) => setCategoryId(e.target.value)} label="카테고리" sx={{ m: 1 }}>
+                     <MenuItem value="1">가전제품</MenuItem>
+                     <MenuItem value="2">의류</MenuItem>
+                  </Select>
+                  <FormHelperText>카테고리를 선택하세요</FormHelperText>
+               </FormControl>
+               <p>대표이미지</p>
+               {titleImgUrl && <img src={titleImgUrl} alt="업로드 이미지 미리보기" style={{ width: '150px', height: '150px' }} />}
+               <Button component="label" role={undefined} variant="contained" tabIndex={-1} startIcon={<CloudUploadIcon />}>
+                  이미지 업로드
+                  <VisuallyHiddenInput type="file" onChange={handleTitleImgChange} name="titleImg" />
+               </Button>
+               <p>추가이미지</p>
+               {subImgUrl && subImgPreview()}
+               <Button component="label" role={undefined} variant="contained" tabIndex={-1} startIcon={<CloudUploadIcon />}>
+                  이미지 업로드
+                  <VisuallyHiddenInput type="file" onChange={handleSubImgChange} name="subImg" multiple />
+               </Button>
+               <Button variant="contained" type="submit" sx={{ mt: 2 }}>
+                  등록하기
+               </Button>
+            </form>
+         </Container>
+      </Wrap>
    )
 }
 

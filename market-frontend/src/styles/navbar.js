@@ -1,12 +1,12 @@
 import styledComponents from 'styled-components'
 
-export const Container = styledComponents.div`
+export const Wrap = styledComponents.div`
 display: flex;
 justify-content: center;
 border-bottom : 1px solid silver;
 `
 
-export const Menu = styledComponents.div`
+export const Container = styledComponents.div`
 display: flex;
 align-items: center;
 justify-content: center;

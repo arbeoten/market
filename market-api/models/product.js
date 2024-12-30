@@ -25,7 +25,7 @@ module.exports = class Product extends Sequelize.Model {
                allowNull: false,
                defaultValue: '판매중',
                validate: {
-                  isIn: [['판매중', '결제완료', '판매완료']],
+                  isIn: [['판매중', '거래진행중', '판매완료']],
                },
             },
          },

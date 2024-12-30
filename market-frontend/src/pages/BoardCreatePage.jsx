@@ -21,7 +21,6 @@ const BoardCreatePage = () => {
    )
    return (
       <>
-         <h1>게시물 등록</h1>
          <BoardReg onSubmit={handleSubmit}></BoardReg>
       </>
    )

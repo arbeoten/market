@@ -1,6 +1,8 @@
 import { useCallback, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { createOrderThunk } from '../../features/orderSlice'
+import { TextField, Button } from '@mui/material'
+import { Wrap, Container } from '../../styles/input'
 
 const Order = ({ product }) => {
    const [address, setAddress] = useState('')
@@ -26,21 +28,25 @@ const Order = ({ product }) => {
    })
 
    return (
-      <>
-         <img src={`${process.env.REACT_APP_API_URL}${product.Images[0].img}`}></img>
-         <p>구매상품 : {product.title}</p>
-         <p>가격 : {product.price.toLocaleString()}</p>
-         <hr></hr>
-         <p>배송지</p>
-         <input type="text" name="address" value={address} onChange={(e) => setAddress(e.target.value)} />
-         <p>수취인</p>
-         <input type="text" name="name" value={name} onChange={(e) => setName(e.target.value)} />
-         <p>연락처</p>
-         <input type="text" name="phone" value={phone} onChange={(e) => setPhone(e.target.value)} />
-         <button onClick={handleOrder} disabled={loading}>
-            주문하기
-         </button>
-      </>
+      <Wrap>
+         <Container>
+            <img src={`${process.env.REACT_APP_API_URL}${product.Images[0].img}`} width="300px"></img>
+            <p>구매상품 : {product.title}</p>
+            <p>가격 : {product.price.toLocaleString()}</p>
+
+            <TextField label="배송지" variant="outlined" type="text" name="address" value={address} onChange={(e) => setAddress(e.target.value)} />
+
+            <TextField label="수취인" variant="outlined" type="text" name="name" value={name} onChange={(e) => setName(e.target.value)} />
+
+            <TextField label="연락처" variant="outlined" type="text" name="phone" value={phone} onChange={(e) => setPhone(e.target.value)} />
+
+            <p>결제수단 : 카드결제</p>
+
+            <Button variant="contained" onClick={handleOrder} disabled={loading} sx={{ m: 1 }}>
+               주문하기
+            </Button>
+         </Container>
+      </Wrap>
    )
 }
 

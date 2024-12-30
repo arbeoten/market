@@ -29,12 +29,7 @@ const BoardEditPage = () => {
    if (loading) return <p>로딩 중...</p>
    if (error) return <p>에러발생 : {error}</p>
 
-   return (
-      <>
-         <h1>게시물 수정</h1>
-         {product && <BoardReg onSubmit={handleSubmit} initialValues={product} />}
-      </>
-   )
+   return <>{product && <BoardReg onSubmit={handleSubmit} initialValues={product} />}</>
 }
 
 export default BoardEditPage

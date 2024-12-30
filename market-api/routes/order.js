@@ -36,4 +36,11 @@ router.post('/', isLoggedIn, async (req, res) => {
       res.status(500).json({ success: false, message: '상품 주문 중 오류가 발생했습니다.', error })
    }
 })
+
+// 주문확인
+
+// 발송완료
+
+// 수령완료
+
 module.exports = router

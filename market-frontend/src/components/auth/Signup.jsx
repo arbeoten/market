@@ -2,6 +2,8 @@ import { useCallback, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { registerUserThunk } from '../../features/authSlice'
 import { Link } from 'react-router-dom'
+import { TextField, Button } from '@mui/material'
+import { Wrap, Container } from '../../styles/input'
 
 const Signup = () => {
    const [loginId, setLoginId] = useState('')
@@ -39,23 +41,21 @@ const Signup = () => {
       )
    }
    return (
-      <>
-         {error && <>{error}</>}
-         <p>아이디</p>
-         <input type="text" name="loginId" value={loginId} onChange={(e) => setLoginId(e.target.value)} />
-         <p>비밀번호</p>
-         <input type="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-         <p>비밀번호 확인</p>
-         <input type="Password" name="confirmPassword" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
-         <p>{password === confirmPassword ? password && confirmPassword && '비밀번호가 일치합니다' : password && confirmPassword && '비밀번호가 일치하지 않습니다.'}</p>
-         <p>닉네임</p>
-         <input type="text" name="nick" value={nick} onChange={(e) => setNick(e.target.value)} />
-         <p>연락처</p>
-         <input type="text" name="phone" value={phone} onChange={(e) => setPhone(e.target.value)} />
-         <button onClick={handleSignup} disabled={loading}>
-            회원가입
-         </button>
-      </>
+      <Wrap>
+         <Container>
+            <p>회원가입</p>
+            {error && <>{error}</>}
+            <TextField label="아이디" variant="outlined" type="text" name="loginId" value={loginId} onChange={(e) => setLoginId(e.target.value)} />
+            <TextField label="비밀번호" variant="outlined" type="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+            <TextField label="비밀번호 확인" variant="outlined" type="Password" name="confirmPassword" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
+            <p>{password === confirmPassword ? password && confirmPassword && '비밀번호가 일치합니다' : password && confirmPassword && '비밀번호가 일치하지 않습니다.'}</p>
+            <TextField label="닉네임" variant="outlined" type="text" name="nick" value={nick} onChange={(e) => setNick(e.target.value)} />
+            <TextField label="연락처" variant="outlined" type="text" name="phone" value={phone} onChange={(e) => setPhone(e.target.value)} />
+            <Button variant="contained" onClick={handleSignup} disabled={loading}>
+               가입신청
+            </Button>
+         </Container>
+      </Wrap>
    )
 }
 

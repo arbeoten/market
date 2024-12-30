@@ -2,6 +2,8 @@ import React, { useCallback, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import { loginUserThunk } from '../../features/authSlice'
+import { Wrap, Container } from '../../styles/input'
+import { TextField, Button } from '@mui/material'
 
 const Login = () => {
    const [loginId, setLoginId] = useState('')
@@ -24,21 +26,22 @@ const Login = () => {
    )
 
    return (
-      <>
-         {error && <>{error}</>}
-         <form onSubmit={handleLogin}>
-            <p>아이디</p>
-            <input type="text" name="loginId" value={loginId} onChange={(e) => setLoginId(e.target.value)} />
-            <p>비밀번호</p>
-            <input type="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-            <button type="submit" disabled={loading}>
-               로그인
-            </button>
-         </form>
-         <p>
-            계정이 없다면 회원가입을 진행해주세요. <Link to="/signup">회원가입</Link>
-         </p>
-      </>
+      <Wrap>
+         <Container>
+            <p>로그인</p>
+            {error && <>{error}</>}
+            <form onSubmit={handleLogin}>
+               <TextField id="loginId" label="아이디" variant="outlined" type="text" name="loginId" value={loginId} onChange={(e) => setLoginId(e.target.value)} sx={{ m: 1 }} />
+               <TextField id="password" label="비밀번호" variant="outlined" name="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} sx={{ m: 1 }} />
+               <Button type="submit" disabled={loading} variant="contained" sx={{ m: 1 }}>
+                  로그인
+               </Button>
+            </form>
+            <p>
+               계정이 없다면 회원가입을 진행해주세요. <Link to="/signup">회원가입</Link>
+            </p>
+         </Container>
+      </Wrap>
    )
 }
 export default Login

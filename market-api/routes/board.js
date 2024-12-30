@@ -179,7 +179,7 @@ router.get('/:id', async (req, res) => {
          include: [
             {
                model: User,
-               attributes: ['id', 'nick'],
+               attributes: ['id', 'nick', 'createdAt'],
             },
             {
                model: Image,

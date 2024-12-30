@@ -34,8 +34,31 @@ const BoardListItem = ({ isAuthenticated, user }) => {
                         <th>판매자</th>
                         <th>판매상태</th>
                      </tr>
-                     {products.map((pr) => {
-                        return (
+                     {products.map((pr) =>
+                        pr.status !== '판매중' ? (
+                           <tr key={pr.id}>
+                              <td>
+                                 <Link to={`/board/detail/${pr.id}`}>
+                                    <img src={`${process.env.REACT_APP_API_URL}${pr.Images[0].img}`} height={'100px'} alt="이미지" style={{ filter: 'grayscale(100%)' }} />
+                                 </Link>
+                              </td>
+                              <td>
+                                 <s>{pr.Category.categoryName}</s>
+                              </td>
+                              <td>
+                                 <s>
+                                    <Link to={`/board/detail/${pr.id}`}>{pr.title}</Link>
+                                 </s>
+                              </td>
+                              <td>
+                                 <s>{pr.price.toLocaleString()}</s>
+                              </td>
+                              <td>
+                                 <Link to={`/user/${pr.User.id}`}>{pr.User.nick}</Link>
+                              </td>
+                              <td style={{ color: 'blue' }}>{pr.status}</td>
+                           </tr>
+                        ) : (
                            <tr key={pr.id}>
                               <td>
                                  <Link to={`/board/detail/${pr.id}`}>
@@ -53,7 +76,7 @@ const BoardListItem = ({ isAuthenticated, user }) => {
                               <td>{pr.status}</td>
                            </tr>
                         )
-                     })}
+                     )}
                   </tbody>
                </Table>
                <Stack spacing={2} sx={{ mt: 3, alignItems: 'center' }}>
@@ -65,7 +88,7 @@ const BoardListItem = ({ isAuthenticated, user }) => {
                </Stack>
             </Container>
          ) : (
-            !loading && <>게시물이 없습니다.</>
+            !loading && <Container>게시물이 없습니다.</Container>
          )}
       </>
    )
