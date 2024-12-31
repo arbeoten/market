@@ -44,26 +44,6 @@ const BoardDetailPage = ({ isAuthenticated, user }) => {
          })
    }, [])
 
-   const onClickCheck = useCallback(() => {
-      const result = window.confirm('상품준비를 시작하겠습니까?')
-      if (result) {
-         // order 상태 상품준비중으로 변경
-         window.alert('처리완료됐습니다')
-      } else {
-         window.alert('취소되었습니다.')
-      }
-   }, [])
-
-   const onClickSend = useCallback(() => {
-      const result = window.confirm('발송완료 처리하겠습니까?')
-      if (result) {
-         // order 상태 배송중으로 변경
-         window.alert('처리완료됐습니다')
-      } else {
-         window.alert('취소되었습니다.')
-      }
-   }, [])
-
    return (
       <Wrap>
          {product && (
@@ -102,16 +82,6 @@ const BoardDetailPage = ({ isAuthenticated, user }) => {
                         <Button variant="contained" onClick={() => onClickDelete(product.id)} sx={{ mt: 1, ml: 1 }}>
                            삭제
                         </Button>
-                        {product.status === '결제완료' && (
-                           <Button variant="contained" sx={{ mt: 1, ml: 1 }} onClick={onClickCheck}>
-                              상품준비
-                           </Button>
-                        )}
-                        {product.status === '상품준비' && (
-                           <Button variant="contained" sx={{ mt: 1, ml: 1 }} onClick={onClickSend}>
-                              발송완료
-                           </Button>
-                        )}
                      </>
                   )}
                   {isAuthenticated && product.User.id !== user.id && (

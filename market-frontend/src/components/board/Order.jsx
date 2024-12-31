@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { createOrderThunk } from '../../features/orderSlice'
 import { TextField, Button } from '@mui/material'
 import { Wrap, Container } from '../../styles/input'
+import { Link } from 'react-router-dom'
 
 const Order = ({ product }) => {
    const [address, setAddress] = useState('')
@@ -10,6 +11,7 @@ const Order = ({ product }) => {
    const [phone, setPhone] = useState('')
    const dispatch = useDispatch()
    const { loading, error } = useSelector((state) => state.auth)
+   const [isOrderComplete, setOrderComplete] = useState(false)
 
    const handleOrder = useCallback(() => {
       if (!address.trim() || !name.trim() || !phone.trim()) {
@@ -20,17 +22,30 @@ const Order = ({ product }) => {
       dispatch(createOrderThunk({ address, phone, name, pid }))
          .unwrap()
          .then(() => {
-            window.location.href = '/'
+            setOrderComplete(true)
          })
          .catch((error) => {
             console.error('주문 에러:', error)
          })
-   })
+   }, [dispatch, address, name, phone, product])
+
+   if (isOrderComplete) {
+      return (
+         <Wrap>
+            <Container>
+               <p>주문이 완료되었습니다</p>
+               <p>
+                  <Link to="/">홈으로 돌아가기</Link>
+               </p>
+            </Container>
+         </Wrap>
+      )
+   }
 
    return (
       <Wrap>
          <Container>
-            <img src={`${process.env.REACT_APP_API_URL}${product.Images[0].img}`} width="300px"></img>
+            <img src={`${process.env.REACT_APP_API_URL}${product.Images[0].img}`} width="300px" alt="주문상품"></img>
             <p>구매상품 : {product.title}</p>
             <p>가격 : {product.price.toLocaleString()}</p>
 

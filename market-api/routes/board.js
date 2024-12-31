@@ -94,7 +94,7 @@ router.post(
    }
 )
 
-// 게시물 호출 (상품)
+// 전체 게시물 호출 (상품) + 제목검색
 router.get('/', async (req, res) => {
    try {
       const Op = Sequelize.Op

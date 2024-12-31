@@ -2,7 +2,7 @@ import axios from 'axios'
 
 const BASE_URL = process.env.REACT_APP_API_URL
 
-//axios 인스턴스 생성
+// axios 인스턴스 생성
 const marketApi = axios.create({
    baseURL: BASE_URL,
    headers: {
@@ -11,7 +11,8 @@ const marketApi = axios.create({
    withCredentials: true, // 세션 쿠키를 요청에 포함
 })
 
-//회원가입
+// auth
+// 회원가입
 export const registerUser = async (userData) => {
    try {
       const response = await marketApi.post('/auth/join', userData)
@@ -22,7 +23,7 @@ export const registerUser = async (userData) => {
    }
 }
 
-//로그인
+// 로그인
 export const loginUser = async (credentials) => {
    try {
       const response = await marketApi.post('/auth/login', credentials)
@@ -33,7 +34,7 @@ export const loginUser = async (credentials) => {
    }
 }
 
-//로그아웃
+// 로그아웃
 export const logoutUser = async () => {
    try {
       const response = await marketApi.get('/auth/logout')
@@ -44,7 +45,7 @@ export const logoutUser = async () => {
    }
 }
 
-//로그인 상태확인
+// 로그인 상태확인
 export const checkAuthStatus = async () => {
    try {
       const response = await marketApi.get('/auth/status')
@@ -55,6 +56,7 @@ export const checkAuthStatus = async () => {
    }
 }
 
+// board
 // 게시물 등록
 export const createProduct = async (productData) => {
    try {
@@ -120,7 +122,8 @@ export const updateProduct = async (id, productData) => {
    }
 }
 
-// 주문 등록
+// order
+// 주문등록
 export const createOrder = async (orderData) => {
    try {
       const response = await marketApi.post('/order', orderData)
@@ -131,10 +134,66 @@ export const createOrder = async (orderData) => {
    }
 }
 
+// 주문확인
+export const checkOrder = async (id) => {
+   try {
+      const response = await marketApi.patch(`/order/check/${id}`)
+      return response
+   } catch (error) {
+      console.error(`API Request 오류: ${error.message}`)
+      throw error
+   }
+}
+
+// 발송완료
+export const sendOrder = async (id) => {
+   try {
+      const response = await marketApi.patch(`/order/send/${id}`)
+      return response
+   } catch (error) {
+      console.error(`API Request 오류: ${error.message}`)
+      throw error
+   }
+}
+
+// 수령완료
+export const receiveOrder = async (id) => {
+   try {
+      const response = await marketApi.patch(`/order/receive/${id}`)
+      return response
+   } catch (error) {
+      console.error(`API Request 오류: ${error.message}`)
+      throw error
+   }
+}
+
+// user
 // 유저 검색
 export const getUserById = async (id) => {
    try {
       const response = await marketApi.get(`/user/${id}`)
+      return response
+   } catch (error) {
+      console.error(`API Request 오류: ${error.message}`)
+      throw error
+   }
+}
+
+// 판매목록
+export const sellProductByUserId = async ({ page, id }) => {
+   try {
+      const response = await marketApi.get(`/user/${id}/sell?page=${page}`)
+      return response
+   } catch (error) {
+      console.error(`API Request 오류: ${error.message}`)
+      throw error
+   }
+}
+
+// 구매목록
+export const buyProductByUserId = async ({ page, id }) => {
+   try {
+      const response = await marketApi.get(`/user/${id}/buy?page=${page}`)
       return response
    } catch (error) {
       console.error(`API Request 오류: ${error.message}`)

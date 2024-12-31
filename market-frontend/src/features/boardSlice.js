@@ -38,7 +38,7 @@ export const updateProductThunk = createAsyncThunk('board/updateProduct', async 
       const response = await updateProduct(id, productData)
       return response.data.product
    } catch (error) {
-      return rejectWithValue(error.response?.data?.message || '게시물 삭제 실패')
+      return rejectWithValue(error.response?.data?.message || '게시물 수정 실패')
    }
 })
 
