@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Pagination, Stack } from '@mui/material'
+import { Card, CardMedia, CardContent, Typography, Pagination, Stack } from '@mui/material'
+import dayjs from 'dayjs'
 import { fetchProductsThunk } from '../../features/boardSlice'
 import { Link, useSearchParams } from 'react-router-dom'
-import { Container, Table } from '../../styles/home'
+import { Container, Wrap } from '../../styles/home'
 
 const BoardListItem = ({ isAuthenticated, user }) => {
    const [query, setQuery] = useSearchParams('')
@@ -23,62 +24,40 @@ const BoardListItem = ({ isAuthenticated, user }) => {
    return (
       <>
          {products && products.length > 0 ? (
-            <Container>
-               <Table>
-                  <tbody>
-                     <tr>
-                        <th>이미지</th>
-                        <th>카테고리</th>
-                        <th>제목</th>
-                        <th>가격</th>
-                        <th>판매자</th>
-                        <th>판매상태</th>
-                     </tr>
-                     {products.map((pr) =>
-                        pr.status !== '판매중' ? (
-                           <tr key={pr.id}>
-                              <td>
-                                 <Link to={`/board/detail/${pr.id}`}>
-                                    <img src={`${process.env.REACT_APP_API_URL}${pr.Images[0].img}`} height={'100px'} alt="이미지" style={{ filter: 'grayscale(100%)' }} />
-                                 </Link>
-                              </td>
-                              <td>
-                                 <s>{pr.Category.categoryName}</s>
-                              </td>
-                              <td>
-                                 <s>
-                                    <Link to={`/board/detail/${pr.id}`}>{pr.title}</Link>
-                                 </s>
-                              </td>
-                              <td>
-                                 <s>{pr.price.toLocaleString()}</s>
-                              </td>
-                              <td>
-                                 <Link to={`/user/${pr.User.id}`}>{pr.User.nick}</Link>
-                              </td>
-                              <td style={{ color: 'blue' }}>{pr.status}</td>
-                           </tr>
-                        ) : (
-                           <tr key={pr.id}>
-                              <td>
-                                 <Link to={`/board/detail/${pr.id}`}>
-                                    <img src={`${process.env.REACT_APP_API_URL}${pr.Images[0].img}`} height={'100px'} alt="이미지" />
-                                 </Link>
-                              </td>
-                              <td>{pr.Category.categoryName}</td>
-                              <td>
-                                 <Link to={`/board/detail/${pr.id}`}>{pr.title}</Link>
-                              </td>
-                              <td>{pr.price.toLocaleString()}</td>
-                              <td>
-                                 <Link to={`/user/${pr.User.id}`}>{pr.User.nick}</Link>
-                              </td>
-                              <td>{pr.status}</td>
-                           </tr>
-                        )
-                     )}
-                  </tbody>
-               </Table>
+            <Wrap>
+               <Container>
+                  {products.map((pr) =>
+                     pr.status === '판매중' ? (
+                        <Card style={{ margin: '8px', width: '300px', border: '1px solid rgb(230, 230, 230)', borderRadius: '0', padding: '0' }} key={pr.id} sx={{ boxShadow: 0 }}>
+                           <Link to={`/board/detail/${pr.id}`} style={{ padding: '0' }}>
+                              <CardMedia sx={{ height: 240 }} image={`${process.env.REACT_APP_API_URL}${pr.Images[0].img}`} title={pr.title} />
+                              <CardContent>
+                                 <Typography>{pr.title} </Typography>
+                                 <Typography sx={{ fontWeight: 'bold' }}>{pr.price.toLocaleString()} 원</Typography>
+                                 <Typography>{dayjs(pr.createdAt).format('YYYY-MM-DD HH:mm:ss')}</Typography>
+                                 <Typography>{pr.status}</Typography>
+                              </CardContent>
+                           </Link>
+                        </Card>
+                     ) : (
+                        <Card style={{ margin: '8px', width: '300px', border: '1px solid rgb(230, 230, 230)', borderRadius: '0', padding: '0' }} key={pr.id} sx={{ boxShadow: 0 }}>
+                           <Link to={`/board/detail/${pr.id}`}>
+                              <CardMedia sx={{ height: 240 }} image={`${process.env.REACT_APP_API_URL}${pr.Images[0].img}`} title={pr.title} style={{ filter: 'grayscale(100%)' }} />
+                              <CardContent>
+                                 <Typography>
+                                    <s>{pr.title}</s>
+                                 </Typography>
+                                 <Typography sx={{ fontWeight: 'bold' }}>
+                                    <s>{pr.price.toLocaleString()} 원</s>
+                                 </Typography>
+                                 <Typography>{dayjs(pr.createdAt).format('YYYY-MM-DD HH:mm:ss')}</Typography>
+                                 <Typography style={{ fontWeight: 'bold' }}>{pr.status}</Typography>
+                              </CardContent>
+                           </Link>
+                        </Card>
+                     )
+                  )}
+               </Container>
                <Stack spacing={2} sx={{ mt: 3, alignItems: 'center' }}>
                   <Pagination
                      count={pagination.totalPages} // 총 페이지
@@ -86,7 +65,7 @@ const BoardListItem = ({ isAuthenticated, user }) => {
                      onChange={handlePageChange} // 페이지 변경 함수
                   />
                </Stack>
-            </Container>
+            </Wrap>
          ) : (
             !loading && <Container>게시물이 없습니다.</Container>
          )}

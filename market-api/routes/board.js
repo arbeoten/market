@@ -65,7 +65,7 @@ router.post(
          // 서브 이미지 등록
          if (req.files.subImg) {
             const imgFiles = req.files.subImg
-            const result = imgFiles.map((img) => {
+            const result = await imgFiles.map((img) => {
                Image.create({
                   img: `/${img.filename}`,
                   ProductId: product.id,
@@ -99,7 +99,7 @@ router.get('/', async (req, res) => {
    try {
       const Op = Sequelize.Op
       const page = parseInt(req.query.page, 10) || 1
-      const limit = parseInt(req.query.limit, 10) || 5
+      const limit = parseInt(req.query.limit, 10) || 6
       const keyword = req.query.keyword || ''
       const offset = (page - 1) * limit
 

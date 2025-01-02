@@ -3,8 +3,7 @@ import { useParams } from 'react-router-dom'
 import { deleteProductThunk, fetchProductByIdThunk } from '../../features/boardSlice'
 import { useCallback, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { Wrap, Container, SwiperBox, ContentBox } from '../../styles/boardDetail'
-import { Button } from '@mui/material'
+import { Wrap, Container, SwiperBox, ContentBox, DetailBt } from '../../styles/boardDetail'
 
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Pagination, Navigation } from 'swiper/modules'
@@ -61,39 +60,45 @@ const BoardDetailPage = ({ isAuthenticated, user }) => {
                   </Swiper>
                </SwiperBox>
                <ContentBox>
-                  <h1>{product.title}</h1>
-                  <p>
-                     {product.Category.categoryName} / 등록일 : {product.createdAt.substr(0, 10)}
-                  </p>
-                  <p>가격 : {product.price.toLocaleString()}원</p>
+                  <p style={{ fontSize: '1.2em', fontWeight: 'bold' }}>{product.title}</p>
+                  <p style={{ fontSize: '2.2em', fontWeight: 'bold' }}>{product.price.toLocaleString()}원</p>
+                  <p>{product.Category.categoryName}</p>
+                  <p>등록일 : {product.createdAt.substr(0, 10)}</p>
                   <p>물품상태 : {product.subContent}</p>
                   <div style={{ border: '1px solid silver', padding: '8px', marginTop: '10px' }}>
-                     <p>{product.User.nick} 님이 판매중입니다.</p>
+                     <p>
+                        <Link to={`/user/${product.User.id}`}>{product.User.nick}</Link>
+                     </p>
                      <p>가입일: {product.User.createdAt.substr(0, 10)}</p>
                   </div>
-                  <p>{product.content}</p>
                   {isAuthenticated && product.User.id === user.id && (
                      <>
                         <Link to={`/board/edit/${product.id}`}>
-                           <Button variant="contained" sx={{ mt: 1 }}>
+                           <DetailBt variant="contained" sx={{ mt: 1 }}>
                               수정
-                           </Button>
+                           </DetailBt>
                         </Link>
-                        <Button variant="contained" onClick={() => onClickDelete(product.id)} sx={{ mt: 1, ml: 1 }}>
+                        <DetailBt variant="contained" onClick={() => onClickDelete(product.id)} sx={{ mt: 1, ml: 1 }}>
                            삭제
-                        </Button>
+                        </DetailBt>
                      </>
                   )}
                   {isAuthenticated && product.User.id !== user.id && (
                      <>
-                        <Button variant="contained" disabled={product.status === '판매중' ? false : true} sx={{ mt: 1 }}>
-                           <Link to={`/order`} state={{ product: product }} style={{ color: 'white' }}>
-                              구매하기
-                           </Link>
-                        </Button>
+                        <Link to={`/order`} state={{ product: product }} style={{ color: 'white' }}>
+                           {product.status === '판매중' && (
+                              <DetailBt variant="contained" sx={{ mt: 1 }}>
+                                 구매하기
+                              </DetailBt>
+                           )}
+                        </Link>
                      </>
                   )}
                </ContentBox>
+               <div style={{ flexBasis: '100%', margin: '40px', padding: '10px', borderTop: '1px solid silver' }}>
+                  <p style={{ marginBottom: '20px', fontSize: '1.1em' }}>상품설명</p>
+                  <p>{product.content}</p>
+               </div>
             </Container>
          )}
       </Wrap>

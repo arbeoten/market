@@ -35,9 +35,13 @@ const Signup = () => {
 
    if (isSignupComplete) {
       return (
-         <p>
-            회원가입이 완료되었습니다.<Link to="/login">로그인</Link>
-         </p>
+         <Wrap>
+            <Container>
+               <p>
+                  회원가입이 완료되었습니다.<Link to="/login">로그인</Link>
+               </p>
+            </Container>
+         </Wrap>
       )
    }
    return (

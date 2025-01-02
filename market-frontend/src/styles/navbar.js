@@ -3,6 +3,8 @@ import styledComponents from 'styled-components'
 export const Wrap = styledComponents.div`
 display: flex;
 justify-content: center;
+margin: 0 auto;
+width: 960px;
 border-bottom : 1px solid silver;
 `
 
@@ -26,7 +28,7 @@ export const SearchBox = styledComponents.div`
 
     & > input {
         box-sizing : border-box;
-        border: 2px solid orange;
+        border: 2px solid rgb(138, 175, 231);;
         border-right : 0;
         width: 410px;
         outline: none;
@@ -34,10 +36,10 @@ export const SearchBox = styledComponents.div`
     }
 
     & > button {
-        color: orange;
+        color: rgb(138, 175, 231);
         background-color: white;
         width: 40px;
-        border: 2px solid orange;
+        border: 2px solid rgb(138, 175, 231);;
         border-left : 0;
             &:hover {
                 cursor: pointer;
@@ -46,8 +48,7 @@ export const SearchBox = styledComponents.div`
 `
 
 export const LoginBt = styledComponents.button`
-    width: 100px;
-    height:40px;
+    width: 140px;
     background-color: white;
     border: none;
     color: silver;

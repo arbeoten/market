@@ -27,8 +27,8 @@ const Navbar = ({ isAuthenticated, user }) => {
    return (
       <Wrap>
          <Container>
-            <Link to="/">
-               <img src="/images/logo.png" height={'40px'} />
+            <Link to="/" style={{ margin: '0' }}>
+               <img src="/images/logo2.png" height={'40px'} />
             </Link>
             <SearchBox>
                <input

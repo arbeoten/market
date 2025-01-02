@@ -1,5 +1,5 @@
 import styles from './styles/common.css'
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes, useLocation } from 'react-router-dom'
 import Navbar from './components/shared/Navbar'
 import HomePage from './pages/HomePage'
 import LoginPage from './pages/LoginPage'
@@ -16,13 +16,23 @@ import { useEffect } from 'react'
 import { checkAuthStatusThunk } from './features/authSlice'
 import Footer from './components/shared/Footer'
 
+let currentPath = ''
+
 function App() {
    const dispatch = useDispatch()
+   let location = useLocation()
 
    const { isAuthenticated, user } = useSelector((state) => state.auth)
+
    useEffect(() => {
       dispatch(checkAuthStatusThunk())
    }, [dispatch])
+
+   // 같은 route 재접근시 새로고침
+   useEffect(() => {
+      if (currentPath === location.pathname) window.location.reload()
+      currentPath = location.pathname
+   }, [location])
 
    return (
       <>

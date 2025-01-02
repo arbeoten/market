@@ -1,14 +1,12 @@
 import styledComponents from 'styled-components'
 
-export const Container = styledComponents.div`
-display: flex;
-flex-direction: column;
-align-items: center;
+export const Wrap = styledComponents.div`
+width: 960px;
+margin: 0 auto;
 `
 
-export const Table = styledComponents.table`
-width: 720px;
-    & * {
-        padding : 5px;
-    }
+export const Container = styledComponents.div`
+display:flex;
+width: 960px;
+flex-wrap: wrap;
 `

@@ -3,13 +3,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import { fetchGetUserByIdThunk, fetchSellProductByUserIdThunk, fetchBuyProductByUserIdThunk } from '../../features/userSlice'
 import { checkOrderThunk, sendOrderThunk, receiveOrderThunk } from '../../features/orderSlice'
 import { Link, useParams } from 'react-router-dom'
-import { Container, Wrap } from '../../styles/userDetail'
+import { Container, Wrap, CardContainer, OrderBt } from '../../styles/userDetail'
 
+import { Card, CardMedia, CardContent, Typography, Pagination, Stack, Box, Tab, Tabs, CardActions } from '@mui/material'
 import PropTypes from 'prop-types'
-import Box from '@mui/material/Box'
-import Tab from '@mui/material/Tab'
-import Tabs from '@mui/material/Tabs'
-import { Button, Pagination, Stack } from '@mui/material'
+import dayjs from 'dayjs'
 
 const UserPageDetail = ({ isAuthenticated, nowUser }) => {
    // 탭구현
@@ -71,15 +69,21 @@ const UserPageDetail = ({ isAuthenticated, nowUser }) => {
    const checkOrder = useCallback(
       (id) => {
          const confirmed = window.confirm('상품준비중으로 변경하시겠습니까?')
-         if (confirmed) dispatch(checkOrderThunk(id))
-         else console.log('취소')
+         if (confirmed) {
+            dispatch(checkOrderThunk(id))
+               .unwrap()
+               .then(() => window.location.reload())
+         } else console.log('취소')
       },
       [dispatch]
    )
    const sendOrder = useCallback(
       (id) => {
          const confirmed = window.confirm('배송시작으로 변경하시겠습니까?')
-         if (confirmed) dispatch(sendOrderThunk(id))
+         if (confirmed)
+            dispatch(sendOrderThunk(id))
+               .unwrap()
+               .then(() => window.location.reload())
          else console.log('취소')
       },
       [dispatch]
@@ -87,7 +91,10 @@ const UserPageDetail = ({ isAuthenticated, nowUser }) => {
    const receiveOrder = useCallback(
       (id) => {
          const confirmed = window.confirm('배송완료로 변경하시겠습니까?')
-         if (confirmed) dispatch(receiveOrderThunk(id))
+         if (confirmed)
+            dispatch(receiveOrderThunk(id))
+               .unwrap()
+               .then(() => window.location.reload())
       },
       [dispatch]
    )
@@ -96,10 +103,10 @@ const UserPageDetail = ({ isAuthenticated, nowUser }) => {
       <Wrap>
          {user && (
             <Container>
-               <p>{user.nick}님의 프로필 페이지</p>
-               <p>가입일 : {user.createdAt.substr(0, 10)}</p>
+               <p style={{ fontSize: '1.1em', fontWeight: 'bold' }}>{user.nick}</p>
+               <p>가입일 {user.createdAt.substr(0, 10)}</p>
                <div>
-                  <Box sx={{ width: '100%' }}>
+                  <Box sx={{ width: '920px' }}>
                      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
                            <Tab label="판매상품" {...a11yProps(0)} />
@@ -113,57 +120,29 @@ const UserPageDetail = ({ isAuthenticated, nowUser }) => {
                         ) : (
                            sellPagination && (
                               <>
-                                 <table>
-                                    <tbody>
-                                       <tr>
-                                          <th>이미지</th>
-                                          <th>카테고리</th>
-                                          <th>제목</th>
-                                          <th>가격</th>
-                                          <th>판매상태</th>
-                                          <th>주문상황</th>
-                                          {nowUser != null && nowUser.id == id && <th>주문관리</th>}
-                                       </tr>
-                                       {sellProducts.map((pr) => (
-                                          <tr key={pr.id}>
-                                             <td>
-                                                <Link to={`/board/detail/${pr.id}`}>
-                                                   <img src={`${process.env.REACT_APP_API_URL}${pr.Images[0].img}`} height={'100px'} alt="이미지" />
-                                                </Link>
-                                             </td>
-                                             <td>{pr.Category.categoryName}</td>
-                                             <td>
-                                                <Link to={`/board/detail/${pr.id}`}>{pr.title}</Link>
-                                             </td>
-                                             <td>{pr.price.toLocaleString()}</td>
-                                             <td>{pr.status}</td>
-                                             <td>{pr.Order?.status}</td>
-                                             {nowUser != null && nowUser.id == id && (
-                                                <>
-                                                   {pr.status == '판매중' && <td></td>}
-
-                                                   {pr.Order?.status == '결제완료' && (
-                                                      <td>
-                                                         <Button onClick={() => checkOrder(pr.Order.id)}>상품준비</Button>
-                                                      </td>
-                                                   )}
-                                                   {pr.Order?.status == '상품준비중' && (
-                                                      <td>
-                                                         <Button onClick={() => sendOrder(pr.Order.id)}>배송시작</Button>
-                                                      </td>
-                                                   )}
-                                                   {pr.Order?.status == '배송중' && (
-                                                      <td>
-                                                         <Button onClick={() => receiveOrder(pr.Order.id)}>배송완료</Button>
-                                                      </td>
-                                                   )}
-                                                   {pr.Order?.status == '배송완료' && <td>배송완료</td>}
-                                                </>
-                                             )}
-                                          </tr>
-                                       ))}
-                                    </tbody>
-                                 </table>
+                                 <CardContainer>
+                                    {sellProducts.map((pr) => (
+                                       <Card style={{ margin: '10px', width: '30%', border: '1px solid rgb(230, 230, 230)', borderRadius: '0', padding: '0' }} key={pr.id} sx={{ boxShadow: 0 }}>
+                                          <Link to={`/board/detail/${pr.id}`}>
+                                             <CardMedia sx={{ height: 240 }} image={`${process.env.REACT_APP_API_URL}${pr.Images[0].img}`} title={pr.title} />
+                                             <CardContent>
+                                                <Typography>{pr.title} </Typography>
+                                                <Typography sx={{ fontWeight: 'bold' }}>{pr.price.toLocaleString()} 원</Typography>
+                                                <Typography>{dayjs(pr.createdAt).format('YYYY-MM-DD HH:mm:ss')}</Typography>
+                                                <Typography>{pr.status}</Typography>
+                                             </CardContent>
+                                          </Link>
+                                          {nowUser != null && nowUser.id == id && (
+                                             <CardActions style={{ borderTop: '1px solid silver' }}>
+                                                <p style={{ fontWeight: 'bold', lineHeight: '40px' }}>{pr.Order?.status || '구매대기중'}</p>
+                                                {pr.Order?.status === '결제완료' && <OrderBt onClick={() => checkOrder(pr.Order?.id)}>주문확인</OrderBt>}
+                                                {pr.Order?.status === '상품준비중' && <OrderBt onClick={() => sendOrder(pr.Order?.id)}>배송출발</OrderBt>}
+                                                {pr.Order?.status === '배송중' && <OrderBt onClick={() => receiveOrder(pr.Order?.id)}>배송완료</OrderBt>}
+                                             </CardActions>
+                                          )}
+                                       </Card>
+                                    ))}
+                                 </CardContainer>
                                  <Stack spacing={2} sx={{ mt: 3, alignItems: 'center' }}>
                                     <Pagination
                                        count={sellPagination.totalPages} // 총 페이지
@@ -184,30 +163,25 @@ const UserPageDetail = ({ isAuthenticated, nowUser }) => {
                               ) : (
                                  buyPagination && (
                                     <>
-                                       <table>
-                                          <tbody>
-                                             <tr>
-                                                <th>이미지</th>
-                                                <th>판매상품</th>
-                                                <th>배송지</th>
-                                                <th>연락처</th>
-                                                <th>주문상황</th>
-                                             </tr>
-                                             {buyProducts.map((pr) => (
-                                                <tr key={pr.id}>
-                                                   <td>
-                                                      <Link to={`/board/detail/${pr.id}`}>
-                                                         <img src={`${process.env.REACT_APP_API_URL}${pr.Product.Images[0].img}`} height={'100px'} alt="이미지" />
-                                                      </Link>
-                                                   </td>
-                                                   <td>{pr.Product.title}</td>
-                                                   <td>{pr.address}</td>
-                                                   <td>{pr.phone}</td>
-                                                   <td>{pr.status}</td>
-                                                </tr>
-                                             ))}
-                                          </tbody>
-                                       </table>
+                                       {buyProducts.map((pr) => (
+                                          <div key={pr.id} style={{ border: '1px solid silver', padding: '8px', marginBottom: '15px' }}>
+                                             <p style={{ padding: '10px' }}>{dayjs(pr.createdAt).format('YYYY-MM-DD HH:mm:ss')}</p>
+                                             <Link to={`/board/detail/${pr.id}`}>
+                                                <div style={{ display: 'flex' }}>
+                                                   <img src={`${process.env.REACT_APP_API_URL}${pr.Product.Images[0].img}`} height={'120px'} alt="이미지" />
+                                                   <div>
+                                                      <p>
+                                                         {pr.Product.title} / {pr.Product.price.toLocaleString()} 원
+                                                      </p>
+                                                      <p>{pr.address}</p>
+                                                      <p>{pr.name}님</p>
+                                                      <p style={{ marginTop: '10px', fontWeight: 'bold' }}>{pr.status}</p>
+                                                   </div>
+                                                </div>
+                                             </Link>
+                                          </div>
+                                       ))}
+
                                        <Stack spacing={2} sx={{ mt: 3, alignItems: 'center' }}>
                                           <Pagination
                                              count={buyPagination.totalPages} // 총 페이지
