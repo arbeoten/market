@@ -25,7 +25,7 @@ const BoardReg = ({ onSubmit, initialValues = {} }) => {
    const [content, setContent] = useState(initialValues.content || '')
    const [subContent, setSubContent] = useState(initialValues.subContent || '')
    const [price, setPrice] = useState(initialValues.price || '')
-   const [categoryId, setCategoryId] = useState(initialValues.categoryId || '')
+   const [categoryId, setCategoryId] = useState(initialValues.CategoryId || '')
 
    const [titleImgFile, setTitleImgFile] = useState(null)
    const [titleImgUrl, setTitleImgUrl] = useState(initialValues.titleImg ? process.env.REACT_APP_API_URL + initialValues.titleImg : '') // 이미지 경로
@@ -83,12 +83,8 @@ const BoardReg = ({ onSubmit, initialValues = {} }) => {
    const handleSubmit = useCallback(
       (e) => {
          e.preventDefault()
-         console.log(title)
-         console.log(content)
-         console.log(subContent)
-         console.log(price)
          console.log(categoryId)
-         console.log(titleImgFile)
+
          if (!title.trim() || !content.trim() || !subContent.trim() || !price || !categoryId || !titleImgUrl) {
             alert('추가 이미지를 제외한 모든 항목을 작성해 주셔야 합니다.')
             return

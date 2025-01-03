@@ -167,7 +167,7 @@ const UserPageDetail = ({ isAuthenticated, nowUser }) => {
                                           <div key={pr.id} style={{ border: '1px solid silver', padding: '8px', marginBottom: '15px' }}>
                                              <p style={{ padding: '10px' }}>{dayjs(pr.createdAt).format('YYYY-MM-DD HH:mm:ss')}</p>
                                              {pr.Product ? (
-                                                <Link to={`/board/detail/${pr.id}`}>
+                                                <Link to={`/board/detail/${pr.ProductId}`}>
                                                    <div style={{ display: 'flex' }}>
                                                       <img src={`${process.env.REACT_APP_API_URL}${pr.Product?.Images[0].img}`} height={'120px'} alt="이미지" style={{ margin: '4px 4px 8px 8px' }} />
                                                       <div>

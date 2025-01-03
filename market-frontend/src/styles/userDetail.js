@@ -27,7 +27,7 @@ export const OrderBt = styledComponents.button`
     height: 40px;
     line-height: 40px;
     background-color: white;
-    color: rgb(138, 175, 231);
+    color: rgb(80, 137, 223);
     font-size: 0.9em;   
     border: none;
     border-radius: 5px;

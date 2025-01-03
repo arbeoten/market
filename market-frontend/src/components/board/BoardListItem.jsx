@@ -69,7 +69,7 @@ const BoardListItem = ({ isAuthenticated, user }) => {
                </Stack>
             </Wrap>
          ) : (
-            !loading && <Wrap style={{ textAlign: 'center' }}>게시물이 없습니다.</Wrap>
+            !loading && <Wrap style={{ textAlign: 'center', margin: '40px auto' }}>게시물이 없습니다.</Wrap>
          )}
       </>
    )
