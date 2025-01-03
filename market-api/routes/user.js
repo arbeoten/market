@@ -89,6 +89,7 @@ router.get('/:id/buy', async (req, res) => {
          include: [
             {
                model: Product,
+               required: false,
                include: [
                   {
                      model: Image,
@@ -96,6 +97,7 @@ router.get('/:id/buy', async (req, res) => {
                      where: {
                         isTitle: true,
                      },
+                     required: false,
                   },
                ],
             },

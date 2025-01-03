@@ -1,4 +1,4 @@
-import styles from './styles/common.css'
+import './styles/common.css'
 import { Route, Routes, useLocation } from 'react-router-dom'
 import Navbar from './components/shared/Navbar'
 import HomePage from './pages/HomePage'
@@ -9,6 +9,7 @@ import OrderPage from './pages/OrderPage'
 import BoardDetailPage from './pages/BoardDetailPage'
 import BoardCreatePage from './pages/BoardCreatePage'
 import BoardEditPage from './pages/BoardEditPage'
+import AdminPage from './pages/AdminPage'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
@@ -39,6 +40,7 @@ function App() {
          <Navbar isAuthenticated={isAuthenticated} user={user} />
          <Routes>
             <Route path="/" element={<HomePage isAuthenticated={isAuthenticated} user={user} />} />
+            <Route path="/admin" element={<AdminPage isAuthenticated={isAuthenticated} user={user} />} />
             <Route path="/:search" element={<HomePage isAuthenticated={isAuthenticated} user={user} />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />
@@ -48,7 +50,7 @@ function App() {
             <Route path="/board/create" element={<BoardCreatePage />} />
             <Route path="/board/edit/:id" element={<BoardEditPage />} />
          </Routes>
-         <Footer />
+         <Footer isAuthenticated={isAuthenticated} user={user} />
       </>
    )
 }

@@ -28,7 +28,7 @@ export const SearchBox = styledComponents.div`
 
     & > input {
         box-sizing : border-box;
-        border: 2px solid rgb(138, 175, 231);;
+        border: 2px solid rgb(138, 175, 231);
         border-right : 0;
         width: 410px;
         outline: none;
@@ -39,7 +39,7 @@ export const SearchBox = styledComponents.div`
         color: rgb(138, 175, 231);
         background-color: white;
         width: 40px;
-        border: 2px solid rgb(138, 175, 231);;
+        border: 2px solid rgb(138, 175, 231);
         border-left : 0;
             &:hover {
                 cursor: pointer;

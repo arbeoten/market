@@ -16,6 +16,7 @@ const authRouter = require('./routes/auth')
 const orderRouter = require('./routes/order')
 const boardRouter = require('./routes/board')
 const userRouter = require('./routes/user')
+const categoryRouter = require('./routes/category')
 
 const app = express()
 passportConfig() // passport 실행
@@ -66,6 +67,7 @@ app.use('/auth', authRouter)
 app.use('/order', orderRouter)
 app.use('/board', boardRouter)
 app.use('/user', userRouter)
+app.use('/category', categoryRouter)
 
 // 잘못된 라우터 경로 처리
 app.use((req, res, next) => {

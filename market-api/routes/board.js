@@ -224,7 +224,7 @@ router.put(
          await product.update({
             title: req.body.title,
             content: req.body.content,
-            subContent: req.body.content,
+            subContent: req.body.subContent,
             price: req.body.price,
             CategoryId: req.body.categoryId,
          })

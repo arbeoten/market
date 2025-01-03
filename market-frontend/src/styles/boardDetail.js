@@ -28,7 +28,7 @@ export const ContentBox = styledComponents.div`
 export const DetailBt = styledComponents.button`
     width: 90px;
     height: 40px;
-    background-color: rgb(138, 175, 231);
+    background-color: rgb(80, 137, 223);
     font-size: 0.9em;
     color: white;
     border: none;

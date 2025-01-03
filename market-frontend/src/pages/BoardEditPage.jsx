@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate, useLocation } from 'react-router-dom'
 import { fetchProductByIdThunk, updateProductThunk } from '../features/boardSlice'
 import { useEffect, useCallback } from 'react'
 import BoardReg from '../components/board/BoardReg'
@@ -7,13 +7,19 @@ import BoardReg from '../components/board/BoardReg'
 const BoardEditPage = () => {
    const { id } = useParams()
    const dispatch = useDispatch()
+   const navigate = useNavigate()
+   const location = useLocation()
    const { product, loading, error } = useSelector((state) => state.board)
    const handleSubmit = useCallback(
       (productData) => {
          dispatch(updateProductThunk({ id, productData }))
             .unwrap()
             .then(() => {
-               window.location.href = '/'
+               if (location.state?.redirectUrl) {
+                  navigate(location.state?.redirectUrl)
+               } else {
+                  navigate('/')
+               }
             })
             .catch((error) => {
                console.error('게시물 수정 실패 : ', error)

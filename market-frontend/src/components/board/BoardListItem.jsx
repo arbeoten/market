@@ -34,6 +34,7 @@ const BoardListItem = ({ isAuthenticated, user }) => {
                               <CardContent>
                                  <Typography>{pr.title} </Typography>
                                  <Typography sx={{ fontWeight: 'bold' }}>{pr.price.toLocaleString()} 원</Typography>
+                                 <Typography>{pr.User.nick}</Typography>
                                  <Typography>{dayjs(pr.createdAt).format('YYYY-MM-DD HH:mm:ss')}</Typography>
                                  <Typography>{pr.status}</Typography>
                               </CardContent>
@@ -50,6 +51,7 @@ const BoardListItem = ({ isAuthenticated, user }) => {
                                  <Typography sx={{ fontWeight: 'bold' }}>
                                     <s>{pr.price.toLocaleString()} 원</s>
                                  </Typography>
+                                 <Typography>{pr.User.nick}</Typography>
                                  <Typography>{dayjs(pr.createdAt).format('YYYY-MM-DD HH:mm:ss')}</Typography>
                                  <Typography style={{ fontWeight: 'bold' }}>{pr.status}</Typography>
                               </CardContent>
@@ -67,7 +69,7 @@ const BoardListItem = ({ isAuthenticated, user }) => {
                </Stack>
             </Wrap>
          ) : (
-            !loading && <Container>게시물이 없습니다.</Container>
+            !loading && <Wrap style={{ textAlign: 'center' }}>게시물이 없습니다.</Wrap>
          )}
       </>
    )

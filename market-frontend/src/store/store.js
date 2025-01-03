@@ -3,6 +3,7 @@ import authReducer from '../features/authSlice'
 import boardReducer from '../features/boardSlice'
 import userReducer from '../features/userSlice'
 import orderReducer from '../features/orderSlice'
+import categoryReducer from '../features/categorySlice'
 
 const store = configureStore({
    reducer: {
@@ -10,6 +11,7 @@ const store = configureStore({
       board: boardReducer,
       user: userReducer,
       order: orderReducer,
+      category: categoryReducer,
    },
 })
 

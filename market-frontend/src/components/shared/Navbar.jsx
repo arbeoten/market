@@ -1,6 +1,6 @@
 import { useDispatch } from 'react-redux'
 import { Container, Wrap, SearchBox, LoginBt } from '../../styles/navbar'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useCallback, useState } from 'react'
 import { logoutUserThunk } from '../../features/authSlice'
 import SearchIcon from '@mui/icons-material/Search'
@@ -8,27 +8,33 @@ import SearchIcon from '@mui/icons-material/Search'
 const Navbar = ({ isAuthenticated, user }) => {
    const dispatch = useDispatch()
    const navigate = useNavigate()
+   const location = useLocation()
    const [keyword, setKeyword] = useState('')
 
    const handleLogout = useCallback(() => {
       dispatch(logoutUserThunk())
          .unwrap()
          .then(() => {
-            navigate('/')
+            window.location.reload()
          })
          .catch((error) => {
             alert(error)
          })
-   }, [dispatch, navigate])
+   }, [dispatch])
 
    const handleSearch = useCallback(() => {
       window.location.href = `/?keyword=${keyword}`
    }, [keyword])
+
+   const handleLogin = useCallback(() => {
+      if (window.location.pathname === '/login') navigate('/login', { state: { redirectUrl: location.state?.redirectUrl || '/' } })
+      else navigate('/login', { state: { redirectUrl: window.location.pathname || '/' } })
+   }, [navigate])
    return (
       <Wrap>
          <Container>
             <Link to="/" style={{ margin: '0' }}>
-               <img src="/images/logo2.png" height={'40px'} />
+               <img src="/images/logo2.png" height={'40px'} alt="로고" />
             </Link>
             <SearchBox>
                <input
@@ -59,9 +65,7 @@ const Navbar = ({ isAuthenticated, user }) => {
             ) : (
                // 로그인 상태가 아닐시
                <>
-                  <Link to="/login">
-                     <LoginBt>로그인/회원가입</LoginBt>
-                  </Link>
+                  <LoginBt onClick={handleLogin}>로그인/회원가입</LoginBt>
                </>
             )}
          </Container>

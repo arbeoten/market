@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { registerUserThunk } from '../../features/authSlice'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { TextField, Button } from '@mui/material'
 import { Wrap, Container } from '../../styles/input'
 
@@ -13,6 +13,7 @@ const Signup = () => {
    const [phone, setPhone] = useState('')
    const [isSignupComplete, setIsSignupComplete] = useState(false)
 
+   const location = useLocation()
    const dispatch = useDispatch()
    const { loading, error } = useSelector((state) => state.auth)
 
@@ -38,7 +39,10 @@ const Signup = () => {
          <Wrap>
             <Container>
                <p>
-                  회원가입이 완료되었습니다.<Link to="/login">로그인</Link>
+                  회원가입이 완료되었습니다.
+                  <Link style={{ fontWeight: 'bold' }} to={location.state?.redirectUrl || '/'}>
+                     기존 페이지로 이동
+                  </Link>
                </p>
             </Container>
          </Wrap>

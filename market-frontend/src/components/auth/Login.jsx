@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { loginUserThunk } from '../../features/authSlice'
 import { Wrap, Container } from '../../styles/input'
 import { TextField, Button } from '@mui/material'
@@ -10,6 +10,7 @@ const Login = () => {
    const [password, setPassword] = useState('')
    const dispatch = useDispatch()
    const navigate = useNavigate()
+   const location = useLocation()
    const { loading, error } = useSelector((state) => state.auth)
 
    const handleLogin = useCallback(
@@ -18,11 +19,17 @@ const Login = () => {
          if (loginId.trim() && password.trim()) {
             dispatch(loginUserThunk({ loginId, password }))
                .unwrap()
-               .then(() => navigate('/'))
+               .then(() => {
+                  if (location.state?.redirectUrl) {
+                     navigate(location.state?.redirectUrl)
+                  } else {
+                     navigate('/')
+                  }
+               })
                .catch((error) => console.error('로그인 실패'))
          }
       },
-      [dispatch, loginId, password, navigate]
+      [dispatch, loginId, password, navigate, location.state?.redirectUrl]
    )
 
    return (
@@ -38,7 +45,10 @@ const Login = () => {
                </Button>
             </form>
             <p>
-               계정이 없다면 회원가입을 진행해주세요. <Link to="/signup">회원가입</Link>
+               계정이 없다면 회원가입을 진행해주세요.
+               <Link to="/signup" state={{ redirectUrl: location.state?.redirectUrl || '/' }}>
+                  회원가입
+               </Link>
             </p>
          </Container>
       </Wrap>

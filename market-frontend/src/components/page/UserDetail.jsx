@@ -166,19 +166,23 @@ const UserPageDetail = ({ isAuthenticated, nowUser }) => {
                                        {buyProducts.map((pr) => (
                                           <div key={pr.id} style={{ border: '1px solid silver', padding: '8px', marginBottom: '15px' }}>
                                              <p style={{ padding: '10px' }}>{dayjs(pr.createdAt).format('YYYY-MM-DD HH:mm:ss')}</p>
-                                             <Link to={`/board/detail/${pr.id}`}>
-                                                <div style={{ display: 'flex' }}>
-                                                   <img src={`${process.env.REACT_APP_API_URL}${pr.Product.Images[0].img}`} height={'120px'} alt="이미지" />
-                                                   <div>
-                                                      <p>
-                                                         {pr.Product.title} / {pr.Product.price.toLocaleString()} 원
-                                                      </p>
-                                                      <p>{pr.address}</p>
-                                                      <p>{pr.name}님</p>
-                                                      <p style={{ marginTop: '10px', fontWeight: 'bold' }}>{pr.status}</p>
+                                             {pr.Product ? (
+                                                <Link to={`/board/detail/${pr.id}`}>
+                                                   <div style={{ display: 'flex' }}>
+                                                      <img src={`${process.env.REACT_APP_API_URL}${pr.Product?.Images[0].img}`} height={'120px'} alt="이미지" style={{ margin: '4px 4px 8px 8px' }} />
+                                                      <div>
+                                                         <p style={{ margin: '0 0 5px 5px' }}>
+                                                            {pr.Product?.title} / {pr.Product?.price.toLocaleString()} 원
+                                                         </p>
+                                                         <p style={{ margin: '5px' }}>{pr.address}</p>
+                                                         <p style={{ margin: '5px' }}>{pr.name}님</p>
+                                                         <p style={{ margin: '15px 0 0 8px', fontWeight: 'bold' }}>{pr.status}</p>
+                                                      </div>
                                                    </div>
-                                                </div>
-                                             </Link>
+                                                </Link>
+                                             ) : (
+                                                <p style={{ margin: '10px' }}>삭제된 상품입니다. 관리자에게 문의하세요 (주문번호 : {pr.id})</p>
+                                             )}
                                           </div>
                                        ))}
 

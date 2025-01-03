@@ -19,7 +19,7 @@ const BoardDetailPage = ({ isAuthenticated, user }) => {
       product.Images.map((img) => {
          return (
             <SwiperSlide key={img.img}>
-               <img src={process.env.REACT_APP_API_URL + img.img} width={'400px'}></img>
+               <img src={process.env.REACT_APP_API_URL + img.img} width={'400px'} alt="상품이미지"></img>
             </SwiperSlide>
          )
       })
@@ -30,21 +30,27 @@ const BoardDetailPage = ({ isAuthenticated, user }) => {
    }, [dispatch, id])
    const { product, loading, error } = useSelector((state) => state.board)
 
-   const onClickDelete = useCallback((id) => {
-      dispatch(deleteProductThunk(id))
-         .unwrap()
-         .then(() => {
-            // navigate('/') => spa방식
-            window.location.href = '/' // => 전체 페이지 새로고침
-         })
-         .catch((error) => {
-            console.log('게시물 삭제중 오류발생 :', error)
-            alert('게시물 삭제에 실패했습니다.')
-         })
-   }, [])
+   const onClickDelete = useCallback(
+      (id) => {
+         dispatch(deleteProductThunk(id))
+            .unwrap()
+            .then(() => {
+               // navigate('/') => spa방식
+               window.location.href = '/' // => 전체 페이지 새로고침
+            })
+            .catch((error) => {
+               console.log('게시물 삭제중 오류발생 :', error)
+               alert('게시물 삭제에 실패했습니다.')
+            })
+      },
+      [dispatch]
+   )
+
+   if (error) console.log(error)
 
    return (
       <Wrap>
+         {loading && <>Loading...</>}
          {product && (
             <Container>
                <SwiperBox>
@@ -60,20 +66,20 @@ const BoardDetailPage = ({ isAuthenticated, user }) => {
                   </Swiper>
                </SwiperBox>
                <ContentBox>
-                  <p style={{ fontSize: '1.2em', fontWeight: 'bold' }}>{product.title}</p>
-                  <p style={{ fontSize: '2.2em', fontWeight: 'bold' }}>{product.price.toLocaleString()}원</p>
+                  <p style={{ fontSize: '1.4em', fontWeight: 'bold' }}>{product.title}</p>
                   <p>{product.Category.categoryName}</p>
-                  <p>등록일 : {product.createdAt.substr(0, 10)}</p>
-                  <p>물품상태 : {product.subContent}</p>
+                  <p style={{ fontSize: '2.2em', fontWeight: 'bold' }}>{product.price.toLocaleString()}원</p>
                   <div style={{ border: '1px solid silver', padding: '8px', marginTop: '10px' }}>
-                     <p>
+                     <p style={{ fontSize: '1.1em', fontWeight: 'bold' }}>
                         <Link to={`/user/${product.User.id}`}>{product.User.nick}</Link>
                      </p>
                      <p>가입일: {product.User.createdAt.substr(0, 10)}</p>
                   </div>
+                  <p>등록일 {product.createdAt.substr(0, 10)}</p>
+                  <p>상품상태 {product.subContent}</p>
                   {isAuthenticated && product.User.id === user.id && (
                      <>
-                        <Link to={`/board/edit/${product.id}`}>
+                        <Link to={`/board/edit/${product.id}`} state={{ redirectUrl: window.location.pathname || '/' }}>
                            <DetailBt variant="contained" sx={{ mt: 1 }}>
                               수정
                            </DetailBt>
@@ -94,9 +100,20 @@ const BoardDetailPage = ({ isAuthenticated, user }) => {
                         </Link>
                      </>
                   )}
+                  {!isAuthenticated && (
+                     <>
+                        <Link to={`/login`} state={{ redirectUrl: window.location.pathname || '/' }} style={{ color: 'white' }}>
+                           {product.status === '판매중' && (
+                              <DetailBt variant="contained" sx={{ mt: 1 }}>
+                                 구매하기
+                              </DetailBt>
+                           )}
+                        </Link>
+                     </>
+                  )}
                </ContentBox>
                <div style={{ flexBasis: '100%', margin: '40px', padding: '10px', borderTop: '1px solid silver' }}>
-                  <p style={{ marginBottom: '20px', fontSize: '1.1em' }}>상품설명</p>
+                  <p style={{ marginBottom: '20px', fontSize: '1.1em' }}>상품소개</p>
                   <p>{product.content}</p>
                </div>
             </Container>

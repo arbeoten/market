@@ -200,3 +200,25 @@ export const buyProductByUserId = async ({ page, id }) => {
       throw error
    }
 }
+
+// 전체 카테고리 호출
+export const getCategorys = async () => {
+   try {
+      const response = await marketApi.get(`/category`)
+      return response
+   } catch (error) {
+      console.error(`API Request 오류: ${error.message}`)
+      throw error
+   }
+}
+
+// 카테고리 등록
+export const createCategory = async (categoryData) => {
+   try {
+      const response = await marketApi.post(`/category`, categoryData)
+      return response
+   } catch (error) {
+      console.error(`API Request 오류: ${error.message}`)
+      throw error
+   }
+}
