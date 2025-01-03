@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { createCategory, getCategorys } from '../api/marketApi'
+import { createCategory, getCategorys, deleteCategory } from '../api/marketApi'
 
 // 카테고리 등록 thunk
 export const createCategoryThunk = createAsyncThunk('category/createCategory', async (categoryData, { rejectWithValue }) => {
@@ -18,6 +18,16 @@ export const fetchCategorysThunk = createAsyncThunk('category/fetchCategorys', a
       return response.data
    } catch (error) {
       return rejectWithValue(error.response?.data?.message || '전체 카테고리 호출 실패')
+   }
+})
+
+// 카테고리 삭제 thunk
+export const deleteCategorysThunk = createAsyncThunk('category/deleteCategorys', async (id, { rejectWithValue }) => {
+   try {
+      const response = await deleteCategory(id)
+      return id
+   } catch (error) {
+      return rejectWithValue(error.response?.data?.message || '카테고리 삭제 실패')
    }
 })
 
@@ -54,6 +64,19 @@ const categorySlice = createSlice({
             state.categorys = action.payload.categorys
          })
          .addCase(fetchCategorysThunk.rejected, (state, action) => {
+            state.loading = false
+            state.error = action.payload
+         })
+      // 카테고리 삭제
+      builder
+         .addCase(deleteCategorysThunk.pending, (state) => {
+            state.loading = true
+            state.error = null
+         })
+         .addCase(deleteCategorysThunk.fulfilled, (state, action) => {
+            state.loading = false
+         })
+         .addCase(deleteCategorysThunk.rejected, (state, action) => {
             state.loading = false
             state.error = action.payload
          })

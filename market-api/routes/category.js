@@ -35,4 +35,20 @@ router.post('/', async (req, res) => {
    }
 })
 
+// 카테고리 삭제
+router.delete('/:id', async (req, res) => {
+   try {
+      const categorys = await Category.destroy({
+         where: { id: req.params.id },
+      })
+      res.json({
+         success: true,
+         message: '카테고리 삭제 성공',
+      })
+   } catch (error) {
+      console.error(error)
+      res.status(500).json({ success: false, message: '카테고리를 삭제하는 중에 오류가 발생했습니다.' })
+   }
+})
+
 module.exports = router

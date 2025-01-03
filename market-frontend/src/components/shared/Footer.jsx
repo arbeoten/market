@@ -18,7 +18,7 @@ const Footer = ({ isAuthenticated, user }) => {
             </div>
          </div>
          {user?.id === 1 && (
-            <p style={{ textAlign: 'center' }}>
+            <p style={{ textAlign: 'center', margin: '20px 0' }}>
                <Link style={{ color: 'red' }} to="/admin">
                   관리자 페이지
                </Link>

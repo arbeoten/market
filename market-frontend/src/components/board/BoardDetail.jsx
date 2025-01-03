@@ -67,7 +67,7 @@ const BoardDetailPage = ({ isAuthenticated, user }) => {
                </SwiperBox>
                <ContentBox>
                   <p style={{ fontSize: '1.4em', fontWeight: 'bold' }}>{product.title}</p>
-                  <p>{product.Category.categoryName}</p>
+                  <p>{product.Category?.categoryName}</p>
                   <p style={{ fontSize: '2.2em', fontWeight: 'bold' }}>{product.price.toLocaleString()}원</p>
                   <div style={{ border: '1px solid silver', padding: '8px', marginTop: '10px' }}>
                      <p style={{ fontSize: '1.1em', fontWeight: 'bold' }}>
@@ -80,7 +80,7 @@ const BoardDetailPage = ({ isAuthenticated, user }) => {
                   {isAuthenticated && product.User.id === user.id && (
                      <>
                         <Link to={`/board/edit/${product.id}`} state={{ redirectUrl: window.location.pathname || '/' }}>
-                           <DetailBt variant="contained" sx={{ mt: 1 }}>
+                           <DetailBt variant="contained" style={{ marginLeft: '0' }}>
                               수정
                            </DetailBt>
                         </Link>
@@ -93,7 +93,7 @@ const BoardDetailPage = ({ isAuthenticated, user }) => {
                      <>
                         <Link to={`/order`} state={{ product: product }} style={{ color: 'white' }}>
                            {product.status === '판매중' && (
-                              <DetailBt variant="contained" sx={{ mt: 1 }}>
+                              <DetailBt variant="contained" style={{ marginLeft: '0' }}>
                                  구매하기
                               </DetailBt>
                            )}
@@ -104,7 +104,7 @@ const BoardDetailPage = ({ isAuthenticated, user }) => {
                      <>
                         <Link to={`/login`} state={{ redirectUrl: window.location.pathname || '/' }} style={{ color: 'white' }}>
                            {product.status === '판매중' && (
-                              <DetailBt variant="contained" sx={{ mt: 1 }}>
+                              <DetailBt variant="contained" style={{ marginLeft: '0' }}>
                                  구매하기
                               </DetailBt>
                            )}

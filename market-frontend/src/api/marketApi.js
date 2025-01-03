@@ -222,3 +222,14 @@ export const createCategory = async (categoryData) => {
       throw error
    }
 }
+
+// 카테고리 삭제
+export const deleteCategory = async (id) => {
+   try {
+      const response = await marketApi.delete(`/category/${id}`) // api 통신
+      return response
+   } catch (error) {
+      console.error(`API 요청 오류: ${error.message}`)
+      throw error
+   }
+}
